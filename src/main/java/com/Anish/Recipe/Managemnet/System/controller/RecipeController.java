@@ -2,11 +2,10 @@ package com.Anish.Recipe.Managemnet.System.controller;
 
 import com.Anish.Recipe.Managemnet.System.model.Recipe;
 import com.Anish.Recipe.Managemnet.System.service.RecipeService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -15,18 +14,28 @@ public class RecipeController {
     @Autowired
     RecipeService recipeService;
 
-    // Create a new recipe
-    @PostMapping
-    public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipe) {
-        Recipe createdRecipe = recipeService.createRecipe(recipe);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdRecipe);
+    @GetMapping
+    public List<Recipe> getAllRecipes() {
+        return recipeService.getAllRecipes();
     }
-    // Get a recipe by ID
+
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-        Recipe recipe = recipeService.getRecipeById(id);
-        return recipe != null ? ResponseEntity.ok(recipe) : ResponseEntity.notFound().build();
+    public Recipe getRecipeById(@PathVariable Long id) {
+        return recipeService.getRecipeById(id);
     }
 
+    @PostMapping
+    public Recipe createRecipe(@RequestBody Recipe recipe) {
+        return recipeService.createRecipe(recipe);
+    }
 
+    @PutMapping("/{id}")
+    public Recipe updateRecipe(@PathVariable Long id, @RequestBody Recipe updatedRecipe) {
+        return recipeService.updateRecipe(id, updatedRecipe);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRecipe(@PathVariable Long id) {
+        recipeService.deleteRecipe(id);
+    }
 }
