@@ -6,10 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -24,4 +21,12 @@ public class RecipeController {
         Recipe createdRecipe = recipeService.createRecipe(recipe);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRecipe);
     }
+    // Get a recipe by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
+        Recipe recipe = recipeService.getRecipeById(id);
+        return recipe != null ? ResponseEntity.ok(recipe) : ResponseEntity.notFound().build();
+    }
+
+
 }

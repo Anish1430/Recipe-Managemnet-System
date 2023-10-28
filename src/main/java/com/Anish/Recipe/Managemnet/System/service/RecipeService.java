@@ -15,4 +15,8 @@ public class RecipeService {
     public Recipe createRecipe(Recipe recipe) {
        return recipeRepo.save(recipe);
     }
+
+    public Recipe getRecipeById(Long id) {
+        return recipeRepo.findById(id).orElse(null);
+    }
 }
