@@ -10,5 +10,4 @@ public class RecipeManagemnetSystemApplication {
 		SpringApplication.run(RecipeManagemnetSystemApplication.class, args);
 		System.out.println("Anish is Creating a Project");
 	}
-
 }
