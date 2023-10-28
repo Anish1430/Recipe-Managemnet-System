@@ -1,13 +1,13 @@
 package com.Anish.Recipe.Managemnet.System.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Data
@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Recipe {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,8 +24,15 @@ public class Recipe {
     private String name;
 
     @NotBlank
+    @Size(max = 1000)
     private String ingredients;
 
     @NotBlank
+    @Size(max = 1000)
     private String instructions;
+
+    // Assume a One-to-Many relationship with comments
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
 }

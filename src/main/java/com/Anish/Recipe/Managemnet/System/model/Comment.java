@@ -13,16 +13,16 @@ import lombok.NoArgsConstructor;
 @Entity
 
 public class Comment {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank
-    private String content;
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-
+    @NotBlank
+    private String content;
 }

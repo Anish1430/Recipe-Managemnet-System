@@ -6,37 +6,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
 public class RecipeService {
+        @Autowired
+        RecipeRepo recipeRepo;
 
-    @Autowired
-    RecipeRepo recipeRepo;
-    public List<Recipe> getAllRecipes() {
-        return recipeRepo.findAll();
-    }
-
-    public Recipe getRecipeById(Long id) {
-        return recipeRepo.findById(id).orElse(null);
-    }
-
-    public Recipe createRecipe(Recipe recipe) {
-        return recipeRepo.save(recipe);
-    }
-
-    public Recipe updateRecipe(Long id, Recipe updatedRecipe) {
-        Recipe existingRecipe = recipeRepo.findById(id).orElse(null);
-        if (existingRecipe != null) {
-            existingRecipe.setName(updatedRecipe.getName());
-            existingRecipe.setIngredients(updatedRecipe.getIngredients());
-            existingRecipe.setInstructions(updatedRecipe.getInstructions());
-            return recipeRepo.save(existingRecipe);
+        public List<Recipe> getAllRecipes() {
+            return recipeRepo.findAll();
         }
-        return null;
-    }
 
-    public void deleteRecipe(Long id) {
-         recipeRepo.deleteById(id);
+        public Optional<Recipe> getRecipeById(Long id) {
+            return recipeRepo.findById(id);
+        }
+
+        public Recipe createRecipe(Recipe recipe) {
+            return recipeRepo.save(recipe);
+        }
+
+        public Recipe updateRecipe(Long id, Recipe updatedRecipe) {
+            Optional<Recipe> existingRecipe = recipeRepo.findById(id);
+
+            if (existingRecipe.isPresent()) {
+                Recipe recipe = existingRecipe.get();
+
+                // Assuming you have validation annotations in your Recipe model
+                recipe.setName(updatedRecipe.getName());
+                recipe.setIngredients(updatedRecipe.getIngredients());
+                recipe.setInstructions(updatedRecipe.getInstructions());
+
+                return recipeRepo.save(recipe);
+            } else {
+                return null; // Recipe with the given id not found
+            }
+        }
+
+        public void deleteRecipe(Long id) {
+            recipeRepo.deleteById(id);
+        }
     }
-}
